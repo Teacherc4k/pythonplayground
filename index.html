@@ -43,20 +43,31 @@
   <pre class="output" id="output"></pre>
 
   <script>
-    let pyodideReady = loadPyodide();
+    <script>
+  let pyodideReady = loadPyodide();
 
-    async function runPython() {
-      const output = document.getElementById("output");
-      output.textContent = "Running...";
-      const pyodide = await pyodideReady;
-      try {
-        const code = document.getElementById("python-code").value;
-        const result = await pyodide.runPythonAsync(code);
-        output.textContent = result !== undefined ? result : '✓ Code ran with no output.';
-      } catch (err) {
-        output.textContent = err;
-      }
+  async function runPython() {
+    const output = document.getElementById("output");
+    output.textContent = "Running...";
+    const pyodide = await pyodideReady;
+
+    // Redirect stdout and stderr
+    pyodide.setStdout({
+      batched: (s) => { output.textContent += s; },
+    });
+    pyodide.setStderr({
+      batched: (s) => { output.textContent += s; },
+    });
+
+    try {
+      const code = document.getElementById("python-code").value;
+      output.textContent = ""; // Clear previous output
+      await pyodide.runPythonAsync(code);
+    } catch (err) {
+      output.textContent += "\n" + err;
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
