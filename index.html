@@ -41,7 +41,8 @@
       margin-top: 1em;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+  <!-- Cache-busting Pyodide import -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js?cb=1"></script>
 </head>
 <body>
   <h1>Python Playground</h1>
@@ -60,25 +61,20 @@
       const pyodide = await pyodideReady;
 
       try {
-        // Redirect Python stdout and stderr to JavaScript
-        let stdout = [];
-        let stderr = [];
+        // Redirect stdout/stderr via StringIO
+        await pyodide.runPythonAsync(`
+import sys
+import io
+sys.stdout = io.StringIO()
+sys.stderr = sys.stdout
+`);
 
-        pyodide.setStdout({
-          batched: (s) => { stdout.push(s); }
-        });
-        pyodide.setStderr({
-          batched: (s) => { stderr.push(s); }
-        });
-
+        // Run user code
         await pyodide.runPythonAsync(code);
-        if (stdout.length > 0) {
-          output.textContent = stdout.join('');
-        } else if (stderr.length > 0) {
-          output.textContent = stderr.join('');
-        } else {
-          output.textContent = "✓ Code ran with no output.";
-        }
+
+        // Get printed output
+        const result = await pyodide.runPythonAsync("sys.stdout.getvalue()");
+        output.textContent = result || "✓ Code ran with no output.";
       } catch (err) {
         output.textContent = "❌ Error:\n" + err;
       }
