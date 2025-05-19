@@ -18,9 +18,6 @@
       align-items: center;
       justify-content: space-between;
     }
-    .brand h1 {
-      margin: 0;
-    }
     .editor {
       margin-top: 20px;
     }
@@ -54,7 +51,6 @@
     canvas {
       border: 1px solid black;
       background-color: white;
-      display: block;
       margin-top: 20px;
     }
   </style>
@@ -91,8 +87,7 @@ for i in range(5):
 
   <script>
     function outf(text) {
-      let output = document.getElementById("output");
-      output.innerHTML += text + "<br>";
+      document.getElementById("output").innerHTML += text + "<br>";
     }
 
     function builtinRead(x) {
@@ -102,11 +97,12 @@ for i in range(5):
     }
 
     function runCode() {
-      let prog = document.getElementById("yourcode").value;
-      let canvasDiv = document.getElementById("mycanvas");
+      const prog = document.getElementById("yourcode").value;
+      const outputDiv = document.getElementById("output");
+      const canvasDiv = document.getElementById("mycanvas");
+
+      outputDiv.innerHTML = "";
       canvasDiv.innerHTML = '<canvas id="skulpt_canvas" width="500" height="400"></canvas>';
-      let output = document.getElementById("output");
-      output.innerHTML = '';
 
       Sk.configure({
         output: outf,
@@ -120,10 +116,11 @@ for i in range(5):
         }
       });
 
-      Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, prog, true))
-        .catch(err => {
-          output.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
-        });
+      Sk.misceval.asyncToPromise(() =>
+        Sk.importMainWithBody("<stdin>", false, prog, true)
+      ).catch((err) => {
+        outputDiv.innerHTML = '<span style="color: red;">' + err.toString() + "</span>";
+      });
     }
   </script>
 </body>
