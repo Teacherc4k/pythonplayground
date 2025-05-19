@@ -37,4 +37,94 @@
       padding: 10px 20px;
       font-size: 16px;
       margin: 10px 0;
-      background: #349
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #output {
+      border: 1px solid #ccc;
+      background: #fff;
+      padding: 10px;
+      height: 100px;
+      overflow-y: auto;
+      border-radius: 5px;
+    }
+    canvas {
+      border: 1px solid black;
+      background-color: white;
+      display: block;
+      margin-top: 20px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt-stdlib.js"></script>
+</head>
+<body>
+  <div class="brand">
+    <h1>🐍 PythonPlayground</h1>
+    <p><em>Learn Python. Create with code.</em></p>
+  </div>
+
+  <div class="editor">
+    <p><strong>Sample Lesson: Drawing a Star</strong></p>
+    <textarea id="yourcode">
+import turtle
+
+t = turtle.Turtle()
+t.speed(1)
+
+for i in range(5):
+    t.forward(100)
+    t.right(144)
+    </textarea>
+    <br>
+    <button onclick="runCode()">Run Code</button>
+    <h3>Console Output:</h3>
+    <div id="output"></div>
+    <h3>Drawing Canvas:</h3>
+    <div id="mycanvas">
+      <canvas id="skulpt_canvas" width="500" height="400"></canvas>
+    </div>
+  </div>
+
+  <script>
+    function outf(text) {
+      let output = document.getElementById("output");
+      output.innerHTML += text + "<br>";
+    }
+
+    function builtinRead(x) {
+      if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+        throw "File not found: '" + x + "'";
+      return Sk.builtinFiles["files"][x];
+    }
+
+    function runCode() {
+      let prog = document.getElementById("yourcode").value;
+      let canvasDiv = document.getElementById("mycanvas");
+      canvasDiv.innerHTML = '<canvas id="skulpt_canvas" width="500" height="400"></canvas>';
+      let output = document.getElementById("output");
+      output.innerHTML = '';
+
+      Sk.configure({
+        output: outf,
+        read: builtinRead,
+        inputfun: () => window.prompt("Input:"),
+        inputfunTakesPrompt: true,
+        turtle: {
+          canvas: canvasDiv,
+          width: 500,
+          height: 400
+        }
+      });
+
+      Sk.misceval.asyncToPromise(() => Sk.importMainWithBody("<stdin>", false, prog, true))
+        .catch(err => {
+          output.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
+        });
+    }
+  </script>
+</body>
+</html>
