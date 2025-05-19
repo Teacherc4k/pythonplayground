@@ -2,40 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PythonPlayground</title>
+  <title>Python Playground</title>
   <style>
     body {
       font-family: sans-serif;
-      margin: 1em 2em;
+      margin: 2em;
       background: #f7f9fc;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1em;
-    }
-    header h1 {
-      font-size: 1.5em;
-      margin: 0;
-    }
-    section.lesson {
-      background: white;
-      border-radius: 4px;
-      padding: 1em;
-      margin-bottom: 1em;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    section.lesson textarea {
+    textarea {
       width: 100%;
       height: 150px;
       font-family: monospace;
-      font-size: 0.9em;
-      padding: 0.5em;
-      box-sizing: border-box;
+      font-size: 1em;
+      margin-bottom: 1em;
     }
-    button.run {
-      margin-top: 0.5em;
+    button {
       padding: 0.5em 1em;
       font-size: 1em;
       background: #347bea;
@@ -44,10 +25,38 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    button.run:hover { background: #255cb8; }
-
-    .output, .canvas-container {
+    pre.output {
       background: white;
-      border-radius: 4px;
       padding: 1em;
-      box-shadow: 0 1px 3px rgba(0,0,0
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      white-space: pre-wrap;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+</head>
+<body>
+  <h1>Python Playground</h1>
+  <textarea id="python-code">print("Hello, Python!")</textarea>
+  <br>
+  <button onclick="runPython()">Run Python</button>
+  <pre class="output" id="output"></pre>
+
+  <script>
+    let pyodideReady = loadPyodide();
+
+    async function runPython() {
+      const output = document.getElementById("output");
+      output.textContent = "Running...";
+      const pyodide = await pyodideReady;
+      try {
+        const code = document.getElementById("python-code").value;
+        const result = await pyodide.runPythonAsync(code);
+        output.textContent = result !== undefined ? result : '✓ Code ran with no output.';
+      } catch (err) {
+        output.textContent = err;
+      }
+    }
+  </script>
+</body>
+</html>
