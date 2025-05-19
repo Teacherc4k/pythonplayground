@@ -55,23 +55,32 @@
 
     async function runPython() {
       const output = document.getElementById("output");
+      const code = document.getElementById("python-code").value;
       output.textContent = "Running...\n";
       const pyodide = await pyodideReady;
 
-      // Redirect stdout and stderr to the output box
-      pyodide.setStdout({
-        batched: (s) => { output.textContent += s; },
-      });
-      pyodide.setStderr({
-        batched: (s) => { output.textContent += s; },
-      });
-
       try {
-        const code = document.getElementById("python-code").value;
-        output.textContent = ""; // Clear previous output
+        // Redirect Python stdout and stderr to JavaScript
+        let stdout = [];
+        let stderr = [];
+
+        pyodide.setStdout({
+          batched: (s) => { stdout.push(s); }
+        });
+        pyodide.setStderr({
+          batched: (s) => { stderr.push(s); }
+        });
+
         await pyodide.runPythonAsync(code);
+        if (stdout.length > 0) {
+          output.textContent = stdout.join('');
+        } else if (stderr.length > 0) {
+          output.textContent = stderr.join('');
+        } else {
+          output.textContent = "✓ Code ran with no output.";
+        }
       } catch (err) {
-        output.textContent += "\n" + err;
+        output.textContent = "❌ Error:\n" + err;
       }
     }
   </script>
