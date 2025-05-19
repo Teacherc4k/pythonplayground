@@ -1,127 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>PythonPlayground</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 20px;
+      font-family: sans-serif;
+      margin: 1em 2em;
+      background: #f7f9fc;
     }
-    h1 {
-      color: #2c3e50;
-    }
-    .brand {
+    header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1em;
     }
-    .editor {
-      margin-top: 20px;
+    header h1 {
+      font-size: 1.5em;
+      margin: 0;
     }
-    textarea {
+    section.lesson {
+      background: white;
+      border-radius: 4px;
+      padding: 1em;
+      margin-bottom: 1em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    section.lesson textarea {
       width: 100%;
-      height: 200px;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      height: 150px;
+      font-family: monospace;
+      font-size: 0.9em;
+      padding: 0.5em;
+      box-sizing: border-box;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 10px 0;
-      background: #3498db;
+    button.run {
+      margin-top: 0.5em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      background: #347bea;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    #output {
-      border: 1px solid #ccc;
-      background: #fff;
-      padding: 10px;
-      height: 100px;
-      overflow-y: auto;
-      border-radius: 5px;
-    }
-    canvas {
-      border: 1px solid black;
-      background-color: white;
-      margin-top: 20px;
-    }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/skulpt-stdlib.js"></script>
-</head>
-<body>
-  <div class="brand">
-    <h1>🐍 PythonPlayground</h1>
-    <p><em>Learn Python. Create with code.</em></p>
-  </div>
+    button.run:hover { background: #255cb8; }
 
-  <div class="editor">
-    <p><strong>Sample Lesson: Drawing a Star</strong></p>
-    <textarea id="yourcode">
-import turtle
-
-t = turtle.Turtle()
-t.speed(1)
-
-for i in range(5):
-    t.forward(100)
-    t.right(144)
-    </textarea>
-    <br>
-    <button onclick="runCode()">Run Code</button>
-    <h3>Console Output:</h3>
-    <div id="output"></div>
-    <h3>Drawing Canvas:</h3>
-    <div id="mycanvas">
-      <canvas id="skulpt_canvas" width="500" height="400"></canvas>
-    </div>
-  </div>
-
-  <script>
-    function outf(text) {
-      document.getElementById("output").innerHTML += text + "<br>";
-    }
-
-    function builtinRead(x) {
-      if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-        throw "File not found: '" + x + "'";
-      return Sk.builtinFiles["files"][x];
-    }
-
-    function runCode() {
-      const prog = document.getElementById("yourcode").value;
-      const outputDiv = document.getElementById("output");
-      const canvasDiv = document.getElementById("mycanvas");
-
-      outputDiv.innerHTML = "";
-      canvasDiv.innerHTML = '<canvas id="skulpt_canvas" width="500" height="400"></canvas>';
-
-      Sk.configure({
-        output: outf,
-        read: builtinRead,
-        inputfun: () => window.prompt("Input:"),
-        inputfunTakesPrompt: true,
-        turtle: {
-          canvas: canvasDiv,
-          width: 500,
-          height: 400
-        }
-      });
-
-      Sk.misceval.asyncToPromise(() =>
-        Sk.importMainWithBody("<stdin>", false, prog, true)
-      ).catch((err) => {
-        outputDiv.innerHTML = '<span style="color: red;">' + err.toString() + "</span>";
-      });
-    }
-  </script>
-</body>
-</html>
+    .output, .canvas-container {
+      background: white;
+      border-radius: 4px;
+      padding: 1em;
+      box-shadow: 0 1px 3px rgba(0,0,0
