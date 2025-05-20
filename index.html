@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Learn Python Step-by-Step</title>
+  <title>Learn Python - Text-Based Lessons</title>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js?cb=2"></script>
   <style>
     body { font-family: sans-serif; background: #f4fbfb; padding: 2em; }
-    .container { max-width: 960px; margin: auto; }
+    .container { max-width: 800px; margin: auto; }
     .step-header { display: flex; justify-content: space-between; margin-bottom: 1em; }
-    .instructions { background: #ffffff; padding: 1em; border-radius: 8px; margin-bottom: 1em; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .instructions { background: #ffffff; padding: 1em; border-radius: 8px; margin-bottom: 1em; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: pre-wrap; }
     .editor { background: #1e1e1e; padding: 1em; border-radius: 8px; color: white; font-family: monospace; margin-bottom: 1em; }
-    textarea { width: 100%; height: 120px; font-size: 1em; background: #1e1e1e; color: white; border: none; resize: vertical; }
-    .output { background: #fff; border: 1px dashed #ccc; min-height: 150px; padding: 1em; margin-top: 1em; border-radius: 8px; white-space: pre-wrap; }
-    .canvas { background: #fff; border: 1px solid #ccc; margin-top: 1em; width: 100%; height: 300px; border-radius: 8px; }
+    textarea { width: 100%; height: 150px; font-size: 1em; background: #1e1e1e; color: white; border: none; resize: vertical; }
+    .output { background: #fff; border: 1px dashed #ccc; min-height: 120px; padding: 1em; margin-top: 1em; border-radius: 8px; white-space: pre-wrap; }
     button { padding: 0.5em 1.5em; margin: 0.5em; font-size: 1em; border: none; border-radius: 6px; cursor: pointer; background: #3c82f6; color: white; }
     button:hover { background: #255ec1; }
   </style>
@@ -20,7 +19,7 @@
 <body>
 <div class="container">
   <div class="step-header">
-    <h2 id="step-title">Step 1 / 1</h2>
+    <h2 id="step-title">Step 1 / 12</h2>
     <button onclick="nextStep()">Next Step ▶</button>
   </div>
 
@@ -34,7 +33,6 @@
 
   <button onclick="runCode()">Run Code</button>
   <div class="output" id="output">Code output will appear here.</div>
-  <canvas class="canvas" id="canvas"></canvas>
 </div>
 
 <script>
@@ -43,14 +41,64 @@
 
   const steps = [
     {
-      title: "Step 1 / 2",
-      instruction: `You're going to build a painting app!\n\nStart by placing a dot using x and y coordinates. Try changing the numbers to see how it moves.`,
-      defaultCode: `x = 100\ny = 100\nfrom js import document\nctx = document.getElementById("canvas").getContext("2d")\nctx.fillStyle = "black"\nctx.beginPath()\nctx.arc(x, y, 5, 0, 3.14*2)\nctx.fill()`
+      title: "Step 1 / 12",
+      instruction: `Welcome to Python!\n\nUse print() to display a message. Try printing your name, age, or favorite color.`,
+      defaultCode: `print("Welcome to Python!")\nprint("My name is...")\nprint("My favorite color is...")`
     },
     {
-      title: "Step 2 / 2",
-      instruction: `Now try placing multiple dots by changing the coordinates multiple times!`,
-      defaultCode: `coords = [(50, 60), (150, 120), (250, 80)]\nfrom js import document\nctx = document.getElementById("canvas").getContext("2d")\nctx.fillStyle = "blue"\nfor x, y in coords:\n    ctx.beginPath()\n    ctx.arc(x, y, 5, 0, 3.14*2)\n    ctx.fill()`
+      title: "Step 2 / 12",
+      instruction: `Learn about variables and data types.\n\nCreate variables for name, age, and is_student.`,
+      defaultCode: `name = "Alex"\nage = 12\nis_student = True\nprint(name, age, is_student)`
+    },
+    {
+      title: "Step 3 / 12",
+      instruction: `Use input() to interact with the user.\n\nBuild a mini profile creator.`,
+      defaultCode: `name = input("What is your name? ")\nage = input("How old are you? ")\nprint("Hello,", name, "you are", age, "years old.")`
+    },
+    {
+      title: "Step 4 / 12",
+      instruction: `Practice math with Python.\n\nTry addition, multiplication, and more.`,
+      defaultCode: `print(5 + 3)\nprint(10 * 2)\nprint((7 + 2) / 3)`
+    },
+    {
+      title: "Step 5 / 12",
+      instruction: `Learn conditionals.\n\nTry using if, elif, and else.`,
+      defaultCode: `score = 85\nif score >= 90:\n    print("A")\nelif score >= 80:\n    print("B")\nelse:\n    print("C or below")`
+    },
+    {
+      title: "Step 6 / 12",
+      instruction: `Use while loops.\n\nTry creating a countdown.`,
+      defaultCode: `n = 5\nwhile n > 0:\n    print(n)\n    n -= 1\nprint("Lift off!")`
+    },
+    {
+      title: "Step 7 / 12",
+      instruction: `Use for loops.\n\nPrint a multiplication table.`,
+      defaultCode: `for i in range(1, 6):\n    print("2 x", i, "=", 2 * i)`
+    },
+    {
+      title: "Step 8 / 12",
+      instruction: `Learn about lists.\n\nCreate a shopping list and print items.`,
+      defaultCode: `shopping_list = ["apples", "bananas", "milk"]\nfor item in shopping_list:\n    print("You need to buy", item)`
+    },
+    {
+      title: "Step 9 / 12",
+      instruction: `Write functions.\n\nDefine a function to add two numbers.`,
+      defaultCode: `def add(a, b):\n    return a + b\n\nprint(add(3, 4))`
+    },
+    {
+      title: "Step 10 / 12",
+      instruction: `Use what you've learned to build a mini game.\n\nThis could be a number guesser or quiz.`,
+      defaultCode: `secret = 7\nguess = int(input("Guess a number: "))\nif guess == secret:\n    print("Correct!")\nelse:\n    print("Try again!")`
+    },
+    {
+      title: "Step 11 / 12",
+      instruction: `Try using libraries like random and time.\n\nRoll a dice and delay output.`,
+      defaultCode: `import random, time\nprint("Rolling...")\ntime.sleep(1)\nprint("You rolled:", random.randint(1, 6))`
+    },
+    {
+      title: "Step 12 / 12",
+      instruction: `Capstone project!\n\nBuild your own interactive game or tool.`,
+      defaultCode: `# Plan your game logic below\ndef start():\n    print("Welcome to my game!")\n    # your code here\n\nstart()`
     }
   ];
 
@@ -81,8 +129,6 @@
     document.getElementById("instruction-box").textContent = step.instruction;
     document.getElementById("code-area").value = step.defaultCode;
     document.getElementById("output").textContent = "Code output will appear here.";
-    const canvas = document.getElementById("canvas");
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
   }
 
   loadStep(currentStep);
